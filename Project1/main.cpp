@@ -17,25 +17,26 @@ enum  SCREEN
 int centerScreenX;
 int centerScreenY;
 int screenX;
+
 //bool pause;
 //bool resetPause;
 //bool exitGame;
 //bool gameOver;
-
+bool loadJumping = false;
 //float scrollingBack = 0.0f;
 float scrollingSemiBack = 0.0f;
 float scrollingMid = 0.0f;
 float scrollingFore = 0.0f;
 
-Texture2D background = LoadTexture(" marsmountain.png");
+Texture2D background;
 
 Rectangle obstaculo_box;
-//struct Patrol
-//{
-//	
-//	Vector2 velocity;
-//	Vector2 gravity;
-//};
+struct Patrol
+{
+	
+	Vector2 velocity;
+	Vector2 gravity;
+};
 
 void Input();
 void Update(int&screen, bool& gameOver);
@@ -59,6 +60,8 @@ Rectangle patrol;
 int main()
 {
 	InitWindow(SCREEN_WIDHT, SCREEN_HEIGHT, "Moon Patrol");
+
+	background = LoadTexture("marsmountain.png");
 
 	Rectangle regresarMenu = { static_cast<int>(GetScreenWidth()) - 980.0f, static_cast<int>(GetScreenHeight()) - 135.0f,250, 100 };
 	Rectangle cursor = { 0 };
@@ -129,6 +132,8 @@ int main()
 		DrawText("ASSETS:https://kenney.nl/assets/space-shooter-redux", GetScreenWidth() / 2 - 200, GetScreenHeight() / 2 + 150, 20, WHITE);
 		DrawText("CODIGO: LEONARDO BRIZUELA", GetScreenWidth() / 2 - 200, GetScreenHeight() / 2 + 250, 20, WHITE);*/
 
+		BeginDrawing();
+		ClearBackground(BLACK);
 
 		DrawRectangleRec(regresarMenu, PURPLE);
 		DrawText("VOLVER AL MENU", GetScreenWidth() - 970, GetScreenHeight() - 100, 26, WHITE);
@@ -151,6 +156,9 @@ int main()
 			}
 
 		}
+
+		EndDrawing();
+
 		break;
 
 	 case EXIT:
@@ -176,12 +184,23 @@ void Input()
 {
 	if (IsKeyPressed(KEY_SPACE))
 	{
-		patrol.y -= 50;
+		loadJumping = true;
 	}
-	else if(IsKeyReleased(KEY_SPACE))
+
+	if (loadJumping)
+	{
+		patrol.y -= 50 * GetFrameTime();
+		cout << patrol.y << endl;
+		if (patrol.y < 400)
+		{
+			loadJumping = false;
+		}
+	}
+
+	/*else if(IsKeyReleased(KEY_SPACE))
 	{
 		patrol.y += 50;
-	}
+	}*/
 }
 
 void Update(int& screen,bool& gameOver )
@@ -207,7 +226,7 @@ void Draw(/*bool& pause,*/ int& screen/*, bool& resetPause*/)
 	Vector2	scrollingBack;
 	scrollingBack.x = 0.0f;
 	scrollingBack.y=20;
-	scrollingBack.x -= 0.1f;
+	//scrollingBack.x -= 0.1f;
 	/*scrollingSemiBack -= 0.25f;
 	scrollingMid -= 0.5f;
 	scrollingFore -= 1.0f;*/
@@ -222,8 +241,8 @@ void Draw(/*bool& pause,*/ int& screen/*, bool& resetPause*/)
 	if (screen==GAME)
 	{
 		
-		DrawTextureEx(background, Vector2 { scrollingBack.x,scrollingBack.y }, 0.0f, 2.0f, WHITE);
-		DrawTextureEx(background, Vector2 { background.width* 2 + scrollingBack.x, scrollingBack.y }, 0.0f, 2.0f, WHITE);
+		DrawTextureEx(background,  scrollingBack, 0.0f, 2.0f, WHITE);
+		//DrawTextureEx(background, Vector2 { background.width* 2 + scrollingBack.x, scrollingBack.y }, 0.0f, 2.0f, WHITE);
 
 		/*DrawTextureEx(semibackground, (Vector2) { scrollingBack, 20 }, 0.0f, 2.0f, WHITE);
 		DrawTextureEx(semibackground, (Vector2) { semibackground.width * 2 + scrollingBack, 20 }, 0.0f, 2.0f, WHITE);
@@ -239,9 +258,7 @@ void Draw(/*bool& pause,*/ int& screen/*, bool& resetPause*/)
 		DrawRectangle(static_cast<int>(obstaculo_box.x), static_cast<int>(obstaculo_box.y), static_cast<int> (obstaculo_box.width), static_cast<int> (obstaculo_box.height), WHITE);
 
 		DrawRectangle(static_cast<int>(patrol.x), static_cast<int>(patrol.y), static_cast<int>(patrol.width), static_cast<int>(patrol.height), RED);
-
-
-		
+	
 	}
 
 	EndDrawing();
