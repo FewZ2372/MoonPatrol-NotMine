@@ -182,21 +182,31 @@ int main()
  
 void Input()
 {
+	
 	if (IsKeyPressed(KEY_SPACE))
 	{
 		loadJumping = true;
 	}
+	else if (IsKeyUp(KEY_SPACE) && !loadJumping)
+	{
+		if (patrol.y <= 450)
+		{
+			patrol.y += 100 * GetFrameTime();
+			cout << "baja: " << patrol.y << endl;
+			loadJumping = false;
+
+		}
+	}
 
 	if (loadJumping)
 	{
-		patrol.y -= 50 * GetFrameTime();
-		cout << patrol.y << endl;
-		if (patrol.y < 400)
+		patrol.y -= 100 * GetFrameTime();
+		cout << "sube: " << patrol.y << endl;
+		if (patrol.y <= 400)
 		{
 			loadJumping = false;
 		}
 	}
-
 	/*else if(IsKeyReleased(KEY_SPACE))
 	{
 		patrol.y += 50;
@@ -345,6 +355,7 @@ void TextMenu()
 	DrawText("SALIR", GetScreenWidth() / 2 - 80, GetScreenHeight() / 2 + 200, 30, WHITE);
 	DrawText("CREDITOS", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 + 70, 30, WHITE);
 	DrawText("JUGAR", GetScreenWidth() / 2 - 80, GetScreenHeight() / 2 - 50, 30, WHITE);
+	DrawText("V0.2", 1170, 850, 50, WHITE);
 
 
 }
