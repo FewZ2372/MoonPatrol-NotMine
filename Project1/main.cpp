@@ -403,7 +403,7 @@ void TextMenu()
 	DrawText("SALIR", GetScreenWidth() / 2 - 80, GetScreenHeight() / 2 + 200, 30, WHITE);
 	DrawText("CREDITOS", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 + 70, 30, WHITE);
 	DrawText("JUGAR", GetScreenWidth() / 2 - 80, GetScreenHeight() / 2 - 50, 30, WHITE);
-	DrawText("V0.2", 1170, 850, 50, WHITE);
+	DrawText("V0.3", 1170, 850, 50, WHITE);
 
 
 }
