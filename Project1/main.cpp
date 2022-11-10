@@ -129,8 +129,8 @@ int main()
 		DrawText("https://freesound.org/people/StephieQueen/", 0, GetScreenHeight() / 2 + 50, 20, WHITE);
 		DrawText("PAGINA DE LA MUSICA: ", 0, GetScreenHeight() / 2 + 80, 20, WHITE);
 		DrawText(" https://freesound.org/people/StephieQueen/sounds/650556/", 0, GetScreenHeight() / 2 + 100, 20, WHITE);
-		DrawText("ASSETS:https://kenney.nl/assets/space-shooter-redux", GetScreenWidth() / 2 - 200, GetScreenHeight() / 2 + 150, 20, WHITE);
-		DrawText("CODIGO: LEONARDO BRIZUELA", GetScreenWidth() / 2 - 200, GetScreenHeight() / 2 + 250, 20, WHITE);*/
+		DrawText("ASSETS:https://kenney.nl/assets/space-shooter-redux", GetScreenWidth() / 2 - 200, GetScreenHeight() / 2 + 150, 20, WHITE);*/
+		DrawText("CODIGO: LEONARDO BRIZUELA", GetScreenWidth() / 2 - 200, GetScreenHeight() / 2 + 250, 20, WHITE);
 
 		BeginDrawing();
 		ClearBackground(BLACK);
