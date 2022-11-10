@@ -53,6 +53,7 @@ Vector2 scrollingFore;
 
 Rectangle patrol;
 Rectangle obstaculo_box;
+Rectangle enemy;
 
 Texture2D background;
 Texture2D semibackground;
@@ -68,6 +69,9 @@ Texture2D foreground;
 int main()
 {
 	InitWindow(SCREEN_WIDHT, SCREEN_HEIGHT, "Moon Patrol");
+
+	enemy.width = 10;
+	enemy.height = 10;
 
 	background = LoadTexture("marsmountain.png");
 	semibackground = LoadTexture("marsfar.png");
@@ -88,6 +92,8 @@ int main()
 	 int screen = MENU;
 	
 	obstaculo_box = { static_cast<float>(screenX),static_cast<float>(centerScreenY+5), 15.0f, 15.0f };
+
+	enemy = { static_cast<float>(0), static_cast<float>(centerScreenY - 200),15.0f,15.0f };
 
 	patrol= { static_cast<float>(centerScreenX),
 			static_cast<float>(centerScreenY),
@@ -213,14 +219,14 @@ void Input()
 			loadJumping = false;
 		}
 	}
-	/*else if(IsKeyReleased(KEY_SPACE))
-	{
-		patrol.y += 50;
-	}*/
+	
 }
 
 void Update(int& screen,bool& gameOver )
 {
+	enemy.x += 100.0f * GetFrameTime();
+	enemy.y -= sin(enemy.x / 10) * GetFrameTime() * 600.0f;
+
 	obstaculo_box.x -= 8 *GetFrameTime()*60.0f;
 
 	if (obstaculo_box.x < 0)
@@ -249,6 +255,10 @@ void Draw(/*bool& pause,*/ int& screen/*, bool& resetPause*/)
 	scrollingFore.y = 20;
 
 
+	if (scrollingBack.x <= -background.width)scrollingBack.x = 0.0f;
+	if (scrollingSemiBack.x <= -semibackground.width)scrollingSemiBack.x = 0.0f;
+	if (scrollingMid.x <= -midground.width) scrollingMid.x = 0.0f;
+
 	/*if (scrollingBack.x <= -background.width * 2) scrollingBack.x = 0;*/
 	/*if (scrollingMid <= -semibackground.width * 2) scrollingMid = 0;
 	if (scrollingMid <= -midground.width * 2) scrollingMid = 0;
@@ -271,6 +281,7 @@ void Draw(/*bool& pause,*/ int& screen/*, bool& resetPause*/)
 
 		/*DrawTextureEx(foreground, (Vector2) { scrollingFore, 70 }, 0.0f, 2.0f, WHITE);
 		DrawTextureEx(foreground, (Vector2) { foreground.width * 2 + scrollingFore, 70 }, 0.0f, 2.0f, WHITE);*/
+		DrawRectangle(static_cast<int>(enemy.x), static_cast<int>(enemy.y), static_cast<int> (enemy.width), static_cast<int> (enemy.height), WHITE);
 
 		DrawRectangle(static_cast<int>(obstaculo_box.x), static_cast<int>(obstaculo_box.y), static_cast<int> (obstaculo_box.width), static_cast<int> (obstaculo_box.height), WHITE);
 
