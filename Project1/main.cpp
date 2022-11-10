@@ -24,11 +24,6 @@ int screenX;
 //bool gameOver;
 bool loadJumping = false;
 //float scrollingBack = 0.0f;
-float scrollingSemiBack = 0.0f;
-float scrollingMid = 0.0f;
-float scrollingFore = 0.0f;
-
-Texture2D background;
 
 
 struct Patrol
@@ -50,8 +45,19 @@ void Game(Rectangle game, Rectangle caja, int& screen);
 void ExitGame(Rectangle exit, Rectangle caja, int& screen);
 void Credits(Rectangle credits, Rectangle cursor, int& screen);
 Rectangle Cursor(Rectangle& cursor);
+
+Vector2	scrollingBack;
+Vector2 scrollingSemiBack;
+Vector2 scrollingMid;
+Vector2 scrollingFore;
+
 Rectangle patrol;
 Rectangle obstaculo_box;
+
+Texture2D background;
+Texture2D semibackground;
+Texture2D midground;
+Texture2D foreground;
 
 
 
@@ -64,6 +70,9 @@ int main()
 	InitWindow(SCREEN_WIDHT, SCREEN_HEIGHT, "Moon Patrol");
 
 	background = LoadTexture("marsmountain.png");
+	semibackground = LoadTexture("marsfar.png");
+	midground = LoadTexture("marsmid.png");
+	foreground = LoadTexture("marsclose.png");
 
 	Rectangle regresarMenu = { static_cast<int>(GetScreenWidth()) - 980.0f, static_cast<int>(GetScreenHeight()) - 135.0f,250, 100 };
 	Rectangle cursor = { 0 };
@@ -230,14 +239,14 @@ void Draw(/*bool& pause,*/ int& screen/*, bool& resetPause*/)
 {
 	BeginDrawing();
 	ClearBackground(BLACK);
-	Vector2	scrollingBack;
-	scrollingBack.x = 0.0f;
-	scrollingBack.y=20;
-	//scrollingBack.x -= 0.1f;
-	/*scrollingSemiBack -= 0.25f;
-	scrollingMid -= 0.5f;
-	scrollingFore -= 1.0f;*/
-
+	scrollingBack.x -= 5.0f * GetFrameTime();
+	scrollingBack.y = -100;
+	scrollingSemiBack.x -= 20.0f * GetFrameTime();
+	scrollingSemiBack.y = -150;
+	scrollingMid.x -= 40.0f * GetFrameTime();
+	scrollingMid.y = -220;
+	scrollingFore.x -= 60.0f * GetFrameTime();
+	scrollingFore.y = 20;
 
 
 	/*if (scrollingBack.x <= -background.width * 2) scrollingBack.x = 0;*/
@@ -251,15 +260,16 @@ void Draw(/*bool& pause,*/ int& screen/*, bool& resetPause*/)
 		DrawTextureEx(background,  scrollingBack, 0.0f, 2.0f, WHITE);
 		//DrawTextureEx(background, Vector2 { background.width* 2 + scrollingBack.x, scrollingBack.y }, 0.0f, 2.0f, WHITE);
 
+		DrawTextureEx(semibackground, scrollingSemiBack, 0.0f, 2.0f, WHITE);
 		/*DrawTextureEx(semibackground, (Vector2) { scrollingBack, 20 }, 0.0f, 2.0f, WHITE);
-		DrawTextureEx(semibackground, (Vector2) { semibackground.width * 2 + scrollingBack, 20 }, 0.0f, 2.0f, WHITE);
+		DrawTextureEx(semibackground, (Vector2) { semibackground.width * 2 + scrollingBack, 20 }, 0.0f, 2.0f, WHITE);*/
+
+		DrawTextureEx(midground, scrollingMid, 0.0f, 2.0f, WHITE);
+		/*DrawTextureEx(midground, (Vector2) { scrollingMid, 20 }, 0.0f, 2.0f, WHITE);
+		DrawTextureEx(midground, (Vector2) { midground.width * 2 + scrollingMid, 20 }, 0.0f, 2.0f, WHITE);*/
 
 
-		DrawTextureEx(midground, (Vector2) { scrollingMid, 20 }, 0.0f, 2.0f, WHITE);
-		DrawTextureEx(midground, (Vector2) { midground.width * 2 + scrollingMid, 20 }, 0.0f, 2.0f, WHITE);
-
-
-		DrawTextureEx(foreground, (Vector2) { scrollingFore, 70 }, 0.0f, 2.0f, WHITE);
+		/*DrawTextureEx(foreground, (Vector2) { scrollingFore, 70 }, 0.0f, 2.0f, WHITE);
 		DrawTextureEx(foreground, (Vector2) { foreground.width * 2 + scrollingFore, 70 }, 0.0f, 2.0f, WHITE);*/
 
 		DrawRectangle(static_cast<int>(obstaculo_box.x), static_cast<int>(obstaculo_box.y), static_cast<int> (obstaculo_box.width), static_cast<int> (obstaculo_box.height), WHITE);
