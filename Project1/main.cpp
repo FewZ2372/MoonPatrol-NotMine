@@ -18,6 +18,7 @@ int centerScreenX;
 int centerScreenY;
 int screenX;
 
+bool bulletActive = false;
 //bool pause;
 //bool resetPause;
 //bool exitGame;
@@ -54,6 +55,8 @@ Vector2 scrollingFore;
 Rectangle patrol;
 Rectangle obstaculo_box;
 Rectangle enemy;
+Rectangle bullet;
+
 
 Texture2D background;
 Texture2D semibackground;
@@ -99,6 +102,8 @@ int main()
 			static_cast<float>(centerScreenY),
 			20.0f,
 			20.0f };
+
+	bullet = { patrol.x,patrol.y,10.0f,10.0f };
 
 	/*SetTargetFPS(60);*/
 	while (!WindowShouldClose() && !exitGame)
@@ -194,6 +199,12 @@ int main()
  
 void Input()
 {
+	if (IsKeyPressed(KEY_ENTER))
+	{
+		bulletActive = true;
+
+
+	}
 	
 	if (IsKeyPressed(KEY_SPACE))
 	{
@@ -227,6 +238,18 @@ void Update(int& screen,bool& gameOver )
 	enemy.x += 100.0f * GetFrameTime();
 	enemy.y -= sin(enemy.x / 10) * GetFrameTime() * 600.0f;
 
+	if (bulletActive == true)
+	{
+		bullet.y -= 400 * GetFrameTime();
+	}
+
+	if (bullet.y <= 0)
+	{
+
+		bulletActive = false;
+		bullet.x = patrol.x;
+		bullet.y = patrol.y;
+	}
 	obstaculo_box.x -= 8 *GetFrameTime()*60.0f;
 
 	if (obstaculo_box.x < 0)
@@ -277,7 +300,14 @@ void Draw(/*bool& pause,*/ int& screen/*, bool& resetPause*/)
 		DrawTextureEx(midground, scrollingMid, 0.0f, 2.0f, WHITE);
 		/*DrawTextureEx(midground, (Vector2) { scrollingMid, 20 }, 0.0f, 2.0f, WHITE);
 		DrawTextureEx(midground, (Vector2) { midground.width * 2 + scrollingMid, 20 }, 0.0f, 2.0f, WHITE);*/
-
+		if (bulletActive == true)
+		{
+			DrawRectangle(static_cast<int>(bullet.x),
+				static_cast<int>(bullet.y),
+				static_cast<int>(bullet.width),
+				static_cast<int>(bullet.height),
+				WHITE);
+		}
 
 		/*DrawTextureEx(foreground, (Vector2) { scrollingFore, 70 }, 0.0f, 2.0f, WHITE);
 		DrawTextureEx(foreground, (Vector2) { foreground.width * 2 + scrollingFore, 70 }, 0.0f, 2.0f, WHITE);*/
