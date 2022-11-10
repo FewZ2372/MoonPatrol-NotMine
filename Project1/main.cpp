@@ -30,7 +30,7 @@ float scrollingFore = 0.0f;
 
 Texture2D background;
 
-Rectangle obstaculo_box;
+
 struct Patrol
 {
 	
@@ -51,6 +51,8 @@ void ExitGame(Rectangle exit, Rectangle caja, int& screen);
 void Credits(Rectangle credits, Rectangle cursor, int& screen);
 Rectangle Cursor(Rectangle& cursor);
 Rectangle patrol;
+Rectangle obstaculo_box;
+
 
 
 //Texture2D semibackground = LoadTexture(" marsfar.png");
@@ -69,12 +71,7 @@ int main()
 	centerScreenX = GetScreenWidth() / 2;
 	centerScreenY = GetScreenHeight() / 2;
 	screenX = GetScreenWidth() - 10;
-	/*Patrol patrol;
-	patrol.velocity.x = 0;
-	patrol.velocity.y = 0;
-	patrol.gravity.x = 0;
-	patrol.gravity.y = 0;
-	*/
+	
 	 bool pause = false;
 	 bool resetPause = false;
 	 bool exitGame = false;
@@ -347,7 +344,7 @@ void DrawMenu(Rectangle cursor, Rectangle game, Rectangle credits, Rectangle ins
 	DrawRectangleRec(credits, PURPLE);
 	DrawRectangleRec(instruction, PURPLE);
 
-}
+} 
 
 void TextMenu()
 {
@@ -393,7 +390,6 @@ void Game(Rectangle game, Rectangle caja, int& screen)
 			screen = GAME;
 			DrawRectangleRec(game, DARKPURPLE);
 			DrawText("JUGAR", GetScreenWidth() / 2 - 80, GetScreenHeight() / 2 - 50, 30, WHITE);
-
 		}
 
 	}
