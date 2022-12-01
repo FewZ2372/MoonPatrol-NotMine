@@ -1,4 +1,7 @@
+#pragma once
+
 #include "Obstacle.h"
+
 
 void setObstacle()
 {
@@ -18,3 +21,4 @@ void moveObstacle()
 		obstacle.rec.x = GetScreenWidth() + obstacle.rec.width;
 	}
 }
+

@@ -1,4 +1,7 @@
+#pragma once
+
 #include "Enemy.h"
+
 
 void setEnemy()
 {
@@ -18,3 +21,4 @@ void enemyMovement()
 		setEnemy();
 	}
 }
+

@@ -1,7 +1,34 @@
+#pragma once
+
 #include "Game.h"
+
 
 float currentTimer = 0;
 float targetTime = 5.0f;
+
+void startGame()
+{
+	const int SCREEN_WIDTH = 1280;
+	const int SCREEN_HEIGHT = 900;
+
+	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Moon Patrol");
+
+	Texture2D background = LoadTexture("../images/marsmountain.png"); /*../*/
+	Texture2D midground = LoadTexture("../images/marsmid.png"); /*../*/
+	Texture2D foreground = LoadTexture("../images/marsclose.png");/* ../*/
+
+	int screen = MENU;
+
+	setGame();
+
+	while (!WindowShouldClose() && !game.exitGame)
+	{
+		BeginDrawing();
+		ClearBackground(BLACK);
+		Menu(screen, background, midground, foreground, game.pause, game.resetPause);
+		EndDrawing();
+	}
+}
 
 void setGame()
 {
@@ -10,40 +37,7 @@ void setGame()
 	game.exitGame = false;
 	game.gameOver = false;
 	game.stillPlaying = false;
-
-}
-
-void ExitGame(Rectangle exit, int& screen)
-{
-	if (CheckCollisionPointRec(GetMousePosition(), exit))
-	{
-		DrawRectangleRec(exit, VIOLET);
-		DrawText("SALIR", GetScreenWidth() / 2 - 80, GetScreenHeight() / 2 + 200, 30, WHITE);
-
-		if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
-		{
-			DrawRectangleRec(exit, DARKPURPLE);
-			DrawText("SALIR", GetScreenWidth() / 2 - 80, GetScreenHeight() / 2 + 200, 30, WHITE);
-			screen = EXIT;
-		}
-	}
-}
-
-void runGame(Rectangle game, int& screen)
-{
-	if (CheckCollisionPointRec(GetMousePosition(), game))
-	{
-		DrawRectangleRec(game, VIOLET);
-		DrawText("JUGAR", GetScreenWidth() / 2 - 80, GetScreenHeight() / 2 - 50, 30, WHITE);
-
-		if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
-		{
-			screen = GAME;
-			DrawRectangleRec(game, DARKPURPLE);
-			DrawText("JUGAR", GetScreenWidth() / 2 - 80, GetScreenHeight() / 2 - 50, 30, WHITE);
-		}
-
-	}
+	game.twoPlayersActive = false;
 }
 
 void Update(int& screen, bool& gameOver, Texture2D& background, Texture2D& midground, Texture2D& foreground)
@@ -51,14 +45,8 @@ void Update(int& screen, bool& gameOver, Texture2D& background, Texture2D& midgr
 	if (IsKeyPressed('P') || IsKeyPressed('p') || IsKeyPressed(KEY_ESCAPE))
 	{
 		screen = PAUSE;
-		//cout << pause << endl;
-		//0 false
-		//1 true
 	}
-	if (IsKeyPressed(KEY_ENTER))
-	{
-		bullet.bulletActive = true;
-	}
+
 	checkCollisionBullet();
 	hasCollided();
 	enemyMovement();
@@ -85,9 +73,26 @@ void hasCollided()
 	{
 		currentTimer = 0;
 		patrol[0].canCollide = true;
-
 	}
 
+	if (game.twoPlayersActive)
+	{
+		currentTimer += GetFrameTime();
+
+		if (CheckCollisionRecs(patrol[1].rec, obstacle.rec) && patrol[1].canCollide == true)
+		{
+			patrol[1].canCollide = false;
+			patrol[1].lives--;
+		}
+
+		if (currentTimer >= targetTime)
+		{
+			currentTimer = 0;
+			patrol[1].canCollide = true;
+
+		}
+
+	}
 }
 
 void checkCollisionBullet()
@@ -99,5 +104,14 @@ void checkCollisionBullet()
 		patrol[0].points++;
 	}
 
+	if (game.twoPlayersActive)
+	{
+		if (CheckCollisionRecs(bullet.rec, enemy.rec))
+		{
+			setEnemy();
+			bullet.bulletActive = false;
+			patrol[1].points++;
+		}
+	}
 }
 

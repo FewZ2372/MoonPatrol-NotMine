@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include "Menu.h"
 
+
 struct Player
 {
 	Rectangle rec;
@@ -18,10 +19,13 @@ struct Player
 extern Player patrol[2];
 extern Player bullet;
 
-void setPlayer();
+void setPlayer1();
+void setPlayer2();
 void setBullet();
+void setBulletP2();
 void playerInput();
 void playerMovement();
 void hasCollided();
 void loseCondition(int& screen);
 void bulletMovement();
+
